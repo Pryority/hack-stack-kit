@@ -1,13 +1,12 @@
-import type { NextPage } from 'next';
-import { Badge, Button, Col, Container, Row } from '@nextui-org/react';
-import { gql, useMutation, useQuery } from 'urql';
+import type { NextPage } from "next";
+import { gql, useMutation, useQuery } from "urql";
 
 import {
   AccountDocument,
   ConnectDocument,
   MintDocument,
   TransfersDocument,
-} from '../.graphclient';
+} from "../.graphclient";
 
 const Home: NextPage = () => {
   const [{ data, fetching, error }] = useQuery({
@@ -21,33 +20,54 @@ const Home: NextPage = () => {
   const account = result[0]?.data?._ethereum?.account;
 
   const doConnect = async () => {
-    console.log('doConnect');
     await connect();
+    console.log(`Connected ${account}!`, connectResult);
   };
 
   const doMint = async () => {
-    console.log('doMint');
     await mint();
+    console.log("Minted!");
   };
 
   return (
-    <Container fluid>
-      <Row justify="center" align="center">
+    <div className="flex flex-col min-h-screen w-full items-center justify-start bg-slate-50">
+      <div className="flex flex-col h-full w-full items-center py-24">
         {account ? (
-          <>
-            <Badge>{account}</Badge>
-            <Button onClick={doMint}>Mint</Button>
-          </>
+          <div className="flex flex-col items-center space-y-2">
+            <div className="font-bold">{account}</div>
+            <button 
+              onClick={doMint}
+              className="buy-btn"
+            >
+              Mint
+            </button>
+          </div>
         ) : (
-          <Button onPress={doConnect}>Connect</Button>
+          <button 
+            onClick={doConnect}
+            className="connect-btn"
+          >
+            Connect
+          </button>
         )}
-      </Row>
-      {data?.transfers.map((transfer) => (
-        <Row key={transfer.id}>
-          {transfer.from} {transfer.to}
-        </Row>
+      </div>
+      {data?.transfers.map((transfer: any) => (
+        <div key={transfer.id} className="grid grid-cols-2 order-last w-full items-center max-w-xl py-1">
+          <div className="flex w-full justify-center">
+            <div className="flex flex-col space-y-[-8px]">
+              <h3 className="text-sm font-medium uppercase tracking-wider cursor-default">From</h3>
+              <p className="cursor-pointer">{`${transfer.from.substring(4, 0)}...${transfer.from.substring( transfer.from.length - 4, transfer.from.length)}`}</p>
+            </div>
+          </div>
+          <div className="flex w-full justify-center">
+            <div className="flex flex-col space-y-[-8px]">
+              <h3 className="text-sm font-medium uppercase tracking-wider cursor-default">To</h3>
+              <p className="cursor-pointer">{`${transfer.to.substring(4, 0)}...${transfer.to.substring( transfer.to.length - 4, transfer.to.length)}`}</p>
+            </div>
+          </div>
+        </div>
       ))}
-    </Container>
+    </div>
   );
 };
 

@@ -62,6 +62,24 @@ export class ApprovalForAll__Params {
   }
 }
 
+export class Mint extends ethereum.Event {
+  get params(): Mint__Params {
+    return new Mint__Params(this);
+  }
+}
+
+export class Mint__Params {
+  _event: Mint;
+
+  constructor(event: Mint) {
+    this._event = event;
+  }
+
+  get to(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+}
+
 export class Transfer extends ethereum.Event {
   get params(): Transfer__Params {
     return new Transfer__Params(this);

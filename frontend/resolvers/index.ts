@@ -1,9 +1,9 @@
-import { ethers } from 'ethers';
-import { Resolvers } from '../.graphclient';
+import { ethers } from "ethers";
+import { Resolvers } from "../.graphclient";
 
-import { MyNFT__factory, MyNFT, networks } from '@private/contracts';
+import { MyNFT__factory, MyNFT, networks } from "@private/contracts";
 
-import { createClient } from 'wagmi';
+import { createClient } from "wagmi";
 
 let client;
 
@@ -47,19 +47,19 @@ export const resolvers: Resolvers = {
       console.log(provider);
 
       // MetaMask requires requesting permission to connect users accounts
-      await provider.send('eth_requestAccounts', []);
+      await provider.send("eth_requestAccounts", []);
 
       signer = provider.getSigner();
 
       return true;
     },
-    mint: async () => {
+    mint: async (address) => {
       const myNFT = MyNFT__factory.connect(
         networks.localhost.MyNFT.address,
         signer,
       );
       const to = await signer.getAddress();
-      console.log(to);
+      console.log(`To: ${to}`);
       return myNFT.mint(to);
     },
   },

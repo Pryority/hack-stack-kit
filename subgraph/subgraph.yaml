@@ -7,7 +7,7 @@ dataSources:
     network: localhost
     source:
       abi: MyNFT
-      address: "0x5FbDB2315678afecb367f032d93F642f64180aa3"
+      address: "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0"
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -15,6 +15,7 @@ dataSources:
       entities:
         - Approval
         - ApprovalForAll
+        - Mint
         - Transfer
       abis:
         - name: MyNFT
@@ -24,6 +25,8 @@ dataSources:
           handler: handleApproval
         - event: ApprovalForAll(indexed address,indexed address,bool)
           handler: handleApprovalForAll
+        - event: Mint(address)
+          handler: handleMint
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleTransfer
       file: ./src/my-nft.ts

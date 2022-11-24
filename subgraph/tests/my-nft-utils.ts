@@ -1,6 +1,11 @@
 import { newMockEvent } from "matchstick-as"
 import { ethereum, Address, BigInt } from "@graphprotocol/graph-ts"
-import { Approval, ApprovalForAll, Transfer } from "../generated/MyNFT/MyNFT"
+import {
+  Approval,
+  ApprovalForAll,
+  Mint,
+  Transfer
+} from "../generated/MyNFT/MyNFT"
 
 export function createApprovalEvent(
   owner: Address,
@@ -47,6 +52,18 @@ export function createApprovalForAllEvent(
   )
 
   return approvalForAllEvent
+}
+
+export function createMintEvent(to: Address): Mint {
+  let mintEvent = changetype<Mint>(newMockEvent())
+
+  mintEvent.parameters = new Array()
+
+  mintEvent.parameters.push(
+    new ethereum.EventParam("to", ethereum.Value.fromAddress(to))
+  )
+
+  return mintEvent
 }
 
 export function createTransferEvent(

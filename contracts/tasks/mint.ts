@@ -15,5 +15,5 @@ task("mint", "Deploys the passed contract")
     const tx = await myNFT.mint(mintTo);
     const receipt = await tx.wait();
 
-    console.log(`Minted 1 NFT to ${mintTo}`);
+    console.log(`✨ Minted 1 NFT to ${mintTo}`);
   });

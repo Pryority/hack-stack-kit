@@ -1,9 +1,10 @@
 import {
   Approval as ApprovalEvent,
   ApprovalForAll as ApprovalForAllEvent,
+  Mint as MintEvent,
   Transfer as TransferEvent
 } from "../generated/MyNFT/MyNFT"
-import { Approval, ApprovalForAll, Transfer } from "../generated/schema"
+import { Approval, ApprovalForAll, Mint, Transfer } from "../generated/schema"
 
 export function handleApproval(event: ApprovalEvent): void {
   let entity = new Approval(
@@ -27,6 +28,19 @@ export function handleApprovalForAll(event: ApprovalForAllEvent): void {
   entity.owner = event.params.owner
   entity.operator = event.params.operator
   entity.approved = event.params.approved
+
+  entity.blockNumber = event.block.number
+  entity.blockTimestamp = event.block.timestamp
+  entity.transactionHash = event.transaction.hash
+
+  entity.save()
+}
+
+export function handleMint(event: MintEvent): void {
+  let entity = new Mint(
+    event.transaction.hash.concatI32(event.logIndex.toI32())
+  )
+  entity.to = event.params.to
 
   entity.blockNumber = event.block.number
   entity.blockTimestamp = event.block.timestamp
